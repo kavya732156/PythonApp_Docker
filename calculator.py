@@ -1,51 +1,53 @@
-# Simple Calculator in Python
+import tkinter as tk
+from tkinter import messagebox
 
-def add(a, b):
-    return a + b
-
-def subtract(a, b):
-    return a - b
-
-def multiply(a, b):
-    return a * b
-
-def divide(a, b):
-    if b == 0:
-        return "Error: Cannot divide by zero!"
-    return a / b
-
-def main():
-    print("=== Simple Calculator ===")
-    print("Operations: +  -  *  /")
-    
-    while True:
+# Function to handle button clicks
+def click(event):
+    text = event.widget.cget("text")
+    if text == "=":
         try:
-            num1 = float(input("Enter first number: "))
-            op = input("Enter operation (+, -, *, /): ")
-            num2 = float(input("Enter second number: "))
+            # Evaluate the expression in the entry
+            result = str(eval(entry.get()))
+            entry.delete(0, tk.END)
+            entry.insert(tk.END, result)
+        except Exception:
+            messagebox.showerror("Error", "Invalid Input")
+    elif text == "C":
+        entry.delete(0, tk.END)
+    else:
+        entry.insert(tk.END, text)
 
-            if op == '+':
-                result = add(num1, num2)
-            elif op == '-':
-                result = subtract(num1, num2)
-            elif op == '*':
-                result = multiply(num1, num2)
-            elif op == '/':
-                result = divide(num1, num2)
-            else:
-                print("Invalid operation!")
-                continue
+# Create main window
+root = tk.Tk()
+root.title("Simple Calculator")
+root.geometry("320x400")  # Width x Height
 
-            print(f"Result: {result}")
+# Entry widget to display input/output
+entry = tk.Entry(root, font=("Arial", 20), borderwidth=2, relief="ridge")
+entry.pack(fill=tk.BOTH, ipadx=8, pady=10, padx=10)
 
-            choice = input("Do another calculation? (y/n): ").lower()
-            if choice != 'y':
-                print("Goodbye!")
-                break
+# Frame to hold buttons
+button_frame = tk.Frame(root)
+button_frame.pack(expand=True, fill="both")
 
-        except ValueError:
-            print("Invalid input. Please enter numbers only.")
+# Buttons layout
+buttons = [
+    ["7", "8", "9", "/"],
+    ["4", "5", "6", "*"],
+    ["1", "2", "3", "-"],
+    ["0", ".", "=", "+"],
+    ["C"]
+]
 
-if __name__ == "__main__":
-    main()
+# Create buttons dynamically
+for row in buttons:
+    row_frame = tk.Frame(button_frame)
+    row_frame.pack(expand=True, fill="both")
+    for btn_text in row:
+        btn = tk.Button(row_frame, text=btn_text, font=("Arial", 18), height=2, width=5)
+        btn.pack(side="left", expand=True, fill="both")
+        btn.bind("<Button-1>", click)
+
+# Run the Tkinter event loop
+root.mainloop()
 
