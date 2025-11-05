@@ -1,0 +1,3 @@
+# Simple Calculator - Python dependencies
+# This project uses only built-in Python libraries.
+# Works with Python 3.8 and above.
